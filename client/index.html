@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>หมากหนีบออนไลน์</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>หมากหนีบออนไลน์</h1>
+        <button id="login-but">login</button>
+        <button id="gust-but">gust</button>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        document.getElementById('gust-but').addEventListener('click',()=>{
+            socket.emit('gust');
+            console.log("click")
+        })
+
+        socket.on('gustOk',()=>{
+            window.location.href = `/lobby.html`
+        })
+    </script>
+</body>
+</html>
