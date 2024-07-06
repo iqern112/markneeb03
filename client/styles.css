@@ -5,3 +5,9 @@
     text-align: center;
 }
 
+#head {
+    max-width: 8000;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}

@@ -3,24 +3,22 @@ const http = require('http');
 const express = require('express')
 const path = require('path')
 const socketIo = require('socket.io')
+
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const indexPage = path.join(__dirname,"client/index.html")
+const onlineUsers = new Set();
 
 app.use(express.static(path.join(__dirname, 'client')));
 
-app.get("/",(req,res)=>{
-    res.status(200)
-    res.type('text/html')
-    res.sendFile(indexPage)
-})
-
 io.on('connection', (socket) => {
-    console.log('New client connected');
+    
     socket.on('gust', () => {
-        console.log("click")
+        const userId = socket.id;
+        onlineUsers.add(userId);
+        console.log(`new user : ${userId}`);
+        console.log("gust")
         socket.emit('gustOk');
     });
 });

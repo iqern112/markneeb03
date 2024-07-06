@@ -8,12 +8,34 @@
 </head>
 <body>
     <div class="container">
-        <h1>หมากหนีบออนไลน์</h1>
-        <h2>Game Lobby</h2>
-        <div id="game-list">
-            <!-- Game list will be dynamically generated here -->
+        <div class="layer1">
+            <h1>หมากหนีบออนไลน์</h1>
         </div>
-        <button id="new-game-btn">New Game</button>
+        <div class="layer1">
+            <div class="layer2">
+                <div class="layer3">
+                    <h2>Game Lobby</h2>
+                    <button id="new-game-btn">New Game</button>
+                </div>
+                <div class="layer3">
+                    <div id="game-list"></div>
+                </div>
+            </div>
+            <div class="layer2">
+                <div class="layer3">
+                    <h2>My User Id</h2>
+                    <div id="my-user-id"></div>
+                </div>
+                <div class="layer3">
+                    <div id="online-player"></div>
+                </div>
+            </div>
+        
+        </div>
     </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+    </script>
 </body>
 </html>
