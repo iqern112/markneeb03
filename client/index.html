@@ -22,6 +22,7 @@
 
         socket.on('gustOk',()=>{
             window.location.href = `/lobby.html`
+            socket.emit('in-to-lobby')
         })
     </script>
 </body>

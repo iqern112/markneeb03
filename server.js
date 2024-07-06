@@ -8,19 +8,21 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const onlineUsers = new Set();
-
 app.use(express.static(path.join(__dirname, 'client')));
 
 io.on('connection', (socket) => {
     
     socket.on('gust', () => {
-        const userId = socket.id;
-        onlineUsers.add(userId);
-        console.log(`new user : ${userId}`);
         console.log("gust")
         socket.emit('gustOk');
     });
+
+    socket.on('in-to-lobby',()=>{
+        const userId = socket.id;
+        console.log(`new user : ${userId}`);
+        socket.emit('your-user-id',userId)
+    })
+
 });
 
 const port = process.env.port || 3000;
