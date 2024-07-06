@@ -15,14 +15,13 @@
             <div class="left-column">
                 <div class="lobby-block">
                     <h2>Game Lobby</h2>
-                    <button id="new-game-btn">New Game</button>
+                    <button id="new-room-btn">New Room</button>
                 </div>
-                <div class="lis-block" id="game-list">
-                </div>
+                <div class="lis-block" id="game-list"></div>
             </div>
             <div class="rigt-column">
-                <div class="Myuser-block">
-                    <h2>My User Id</h2>
+                <div class="My-user-block">
+                    <p>My User Id :</p>
                     <div id="my-user-id"></div>
                 </div>
                 <div class="online-player" id="online-player">
@@ -35,13 +34,20 @@
     <script>
         const socket = io()
 
-        // socket.on('gustOk',()=>{
-            
-        // })
+        socket.emit('in-to-lobby')
 
         socket.on('your-user-id',(userID)=>{
-            document.getElementById('my-user-id').innerText(userID)
+            document.getElementById('my-user-id').innerText = userID
         })
+
+        document.getElementById('new-room-btn').addEventListener('click',()=>{
+            socket.emit('new-room')
+        });
+
+        socket.on('acess-room',()=>{
+            window.location.href = `/gameRoom.html`
+        })
+
     </script>
 </body>
 </html>

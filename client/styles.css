@@ -1,5 +1,3 @@
-/* styles.css */
-
 /* รีเซ็ตค่าเริ่มต้นของเบราว์เซอร์ */
 * {
     margin: 0;
@@ -35,11 +33,11 @@ body {
 .body-content {
     display: flex;
     justify-content: space-between;
+    gap: 20px;
 }
 
 .left-column {
     flex: 3;
-    margin: 10px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -47,36 +45,34 @@ body {
 
 .rigt-column {
     flex: 2;
-    margin: 10px;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.lobby-block {
+.lobby-block, .My-user-block {
     background-color: #e6e6e6;
     padding: 20px;
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 150px; /* ความสูงคงที่เท่ากัน */
 }
 
-.lobby-block h2 {
+.lobby-block h2, .My-user-block h2 {
     margin: 0;
 }
 
-.lis-block, .Myuser-block, .online-player {
-    background-color: #e6e6e6;
+.lis-block, .online-player {
+    background-color: #99c9f0;
     padding: 20px;
     border-radius: 8px;
+    height: 300px; /* ความสูงคงที่ */
+    overflow-y: auto; /* เพิ่ม scroll bar ถ้าเนื้อหามากเกิน */
 }
 
-.Myuser-block h2 {
-    margin-bottom: 10px;
-}
-
-#new-game-btn {
+#new-room-btn {
     padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
@@ -90,23 +86,12 @@ body {
     background-color: #0056b3;
 }
 
-/* ไฮไลต์การปรับขนาดกล่องและการเพิ่ม scrollbar */
-#game-list, #online-player {
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 4px;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    height: 300px; /* ความสูงคงที่ */
-    overflow-y: auto; /* เพิ่ม scroll bar ถ้าเนื้อหามากเกิน */
-}
-
 @media (max-width: 768px) {
     .body-content {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .left-column, .rigt-column {
         margin: 10px 0;
     }

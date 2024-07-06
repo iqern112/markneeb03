@@ -17,12 +17,16 @@ io.on('connection', (socket) => {
         socket.emit('gustOk');
     });
 
-    socket.on('in-to-lobby',()=>{
+    socket.on('in-to-lobby',()=>{//อาจมีการเขียน if และใช้ session มาช่วยในการเก็บ id เดิม
         const userId = socket.id;
         console.log(`new user : ${userId}`);
         socket.emit('your-user-id',userId)
     })
 
+    socket.on('new-room',()=>{
+        console.log("new room")
+        socket.emit('acess-room')
+    })
 });
 
 const port = process.env.port || 3000;
