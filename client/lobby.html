@@ -37,10 +37,7 @@
     <script>
         const socket = io();
         let roomId;
-        const userIdCookie = document.cookie.split(';').map(cookie => cookie.trim()).find(cookie => cookie.startsWith('userId='));
-        let userId = userIdCookie ? userIdCookie.split('=')[1] : null;
-
-
+        let userId = document.cookie.split('; ').find(row => row.startsWith('userId=')).split('=')[1];
         // หลังจากเชื่อมต่อ Socket.io แล้ว
 socket.on('connect', () => {
     // ขอข้อมูลห้องทั้งหมดจากเซิร์ฟเวอร์

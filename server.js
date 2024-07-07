@@ -23,7 +23,7 @@ io.on('connection', (socket) => {
     const cookies = socket.handshake.headers.cookie;
     const parsedCookies = cookie.parse(cookies || '');
     const userId = parsedCookies['userId'] || socket.id;
-    console.log(`sadw : ${onlineUsers}`);
+    console.log(`sadw : ${userId}`);
     // ส่ง userId กลับไปยัง client
     socket.emit('set-user-id', userId);
     socket.on('gust', () => {
