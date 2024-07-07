@@ -15,14 +15,15 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
+        let userId = document.cookie.split('; ').find(row => row.startsWith('userId=')).split('=')[1];
 
         document.getElementById('gust-but').addEventListener('click',()=>{
             socket.emit('gust');
-        })
+        });
 
         socket.on('gustOk',()=>{
             window.location.href = `/lobby.html`
-        })
+        });
     </script>
 </body>
 </html>
