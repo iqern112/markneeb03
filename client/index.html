@@ -15,8 +15,9 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
-        const userIdCookie = document.cookie.split('; ').find(row => row.startsWith('userId='));
+        const userIdCookie = document.cookie.split(';').map(cookie => cookie.trim()).find(cookie => cookie.startsWith('userId='));
         let userId = userIdCookie ? userIdCookie.split('=')[1] : null;
+
 
 
         document.getElementById('gust-but').addEventListener('click',()=>{
