@@ -18,7 +18,7 @@
                     <button id="new-game-btn">New Game</button>
                 </div>
                 <div class="lis-block" id="game-list">
-                    <div id="existing-rooms"></div> <!-- เพิ่มส่วนนี้เพื่อแสดงปุ่มห้อง -->
+                    <!-- <div id="game-list"></div> -->
                 </div>
             </div>
             <div class="rigt-column">
@@ -27,7 +27,7 @@
                     <div id="my-user-id"></div>
                 </div>
                 <div class="online-player" id="online-player">
-                    <div id="online-users"></div> <!-- แสดงรายชื่อผู้ใช้ที่ออนไลน์ -->
+                    <!-- <div id="online-player"></div> -->
                 </div>
             </div>
         
@@ -35,74 +35,6 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io();
-        let roomId;
-        let userId = document.cookie.split('; ').find(row => row.startsWith('userId=')).split('=')[1];
-        // หลังจากเชื่อมต่อ Socket.io แล้ว
-socket.on('connect', () => {
-    // ขอข้อมูลห้องทั้งหมดจากเซิร์ฟเวอร์
-    socket.emit('get-all-rooms');
-});
-
-// รับข้อมูลห้องทั้งหมดจากเซิร์ฟเวอร์
-socket.on('all-rooms', (roomNames) => {
-    const existingRoomsContainer = document.getElementById('existing-rooms');
-    existingRoomsContainer.innerHTML = ''; // ล้างข้อมูลเก่าทิ้ง
-
-    roomNames.forEach((roomName) => {
-        const roomButton = document.createElement('button');
-        roomButton.textContent = roomName;
-        roomButton.addEventListener('click', () => {
-            joinRoom(roomName);
-        });
-        existingRoomsContainer.appendChild(roomButton);
-    });
-});
-// รับ socket.id จากเซิร์ฟเวอร์และเก็บลงใน Cookies
-        socket.on('set-user-id', (userId) => {
-            
-            document.getElementById('my-user-id').textContent = userId; // แสดง userId ที่ได้รับ
-        });
-
-        function createRoom() {
-    const roomName = prompt('Enter room name:');
-    if (roomName) {
-        socket.emit('create-room', roomName);
-    }
-    
-    joinRoom(roomName);
-        }
-        function joinRoom(roomName) {
-    socket.emit('join-room', roomName);
-        }
-        socket.on('join-room', () => {
-        window.location.href = `/gameRoom.html`
-        });
-        document.getElementById('new-game-btn').addEventListener('click', () => {
-    createRoom();
-    });
-    // รับข้อมูลผู้ใช้ที่อยู่ในเว็บไซต์
-socket.on('update-online-users', (users) => {
-    const onlineUsersContainer = document.getElementById('online-users');
-    onlineUsersContainer.innerHTML = ''; // ล้างข้อมูลเก่าทิ้ง
-    const usersList = document.createElement('ul');
-
-    users.forEach(user => {
-        const userItem = document.createElement('li');
-        userItem.textContent = user;
-        usersList.appendChild(userItem);
-    });
-
-    onlineUsersContainer.appendChild(usersList);
-    });
-    // จัดการเมื่อผู้ใช้ปิดหน้าต่างเว็บ
-    window.addEventListener('beforeunload', () => {
-        document.getElementById('my-user-id').textContent = userId; // แสดง userId ที่ได้รับ
-        // ส่ง event ให้ server ทราบว่าผู้ใช้กำลังจะออก
-        socket.emit('leave', userId);
-    });
-
-        
 
     </script>
 </body>
