@@ -31,6 +31,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('in-to-lobby',()=>{//อาจมีการเขียน if และใช้ session มาช่วยในการเก็บ id เดิม
+        const userId = socket.userId;
         if(!socket.handshake.session.userId){
             const userId = socket.userId;
             socket.handshake.session.userId = userId;
