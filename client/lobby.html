@@ -36,7 +36,74 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
-        
+        let roomId;
+        let userId;
+        // Check if userId exists in localStorage or sessionStorage
+const storedUserId = localStorage.getItem('userId'); // หรือ sessionStorage.getItem('userId');
+if (storedUserId) {
+    userId = storedUserId;
+    // Reconnect to socket.io with userId
+    socket.emit('gust');
+    // Handle events or actions after reconnecting
+}
+        // หลังจากเชื่อมต่อ Socket.io แล้ว
+socket.on('connect', () => {
+    console.log('Connected to server');
+    // ขอข้อมูลห้องทั้งหมดจากเซิร์ฟเวอร์
+    socket.emit('get-all-rooms');
+});
+
+socket.on('reconnect', () => {
+    console.log('Reconnected to server');
+    // Handle any actions or events after reconnection
+});
+
+socket.on('disconnect', () => {
+    console.log('Disconnected from server');
+    // Handle any actions or events after disconnection
+});
+
+socket.on('reconnect_attempt', () => {
+    console.log('Attempting to reconnect to server');
+});
+
+socket.on('reconnect_failed', () => {
+    console.log('Failed to reconnect to server');
+    // Handle any actions or events after failed reconnection
+});
+
+// รับข้อมูลห้องทั้งหมดจากเซิร์ฟเวอร์
+socket.on('all-rooms', (roomNames) => {
+    const existingRoomsContainer = document.getElementById('existing-rooms');
+    existingRoomsContainer.innerHTML = ''; // ล้างข้อมูลเก่าทิ้ง
+
+    roomNames.forEach((roomName) => {
+        const roomButton = document.createElement('button');
+        roomButton.textContent = roomName;
+        roomButton.addEventListener('click', () => {
+            joinRoom(roomName);
+        });
+        existingRoomsContainer.appendChild(roomButton);
+    });
+});
+
+        function createRoom() {
+    const roomName = prompt('Enter room name:');
+    if (roomName) {
+        socket.emit('create-room', roomName);
+    }
+    
+    joinRoom(roomName);
+        }
+        function joinRoom(roomName) {
+    socket.emit('join-room', roomName);
+        }
+        socket.on('join-room', () => {
+        window.location.href = `/gameRoom.html`
+        });
+        document.getElementById('new-game-btn').addEventListener('click', () => {
+    createRoom();
+    });
     // รับข้อมูลผู้ใช้ที่อยู่ในเว็บไซต์
 socket.on('update-online-users', (users) => {
     const onlineUsersContainer = document.getElementById('online-users');

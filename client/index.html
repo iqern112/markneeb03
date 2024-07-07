@@ -18,11 +18,14 @@
 
         document.getElementById('gust-but').addEventListener('click',()=>{
             socket.emit('gust');
-        })
+        });
 
         socket.on('gustOk',()=>{
+            // ดึง userId จาก localStorage หรือ sessionStorage
+            const userId = localStorage.getItem('userId'); // หรือ sessionStorage.getItem('userId');
+            console.log(`userId: ${userId}`);
             window.location.href = `/lobby.html`
-        })
+        });
     </script>
 </body>
 </html>
