@@ -3,6 +3,9 @@ const http = require('http');
 const express = require('express')
 const path = require('path')
 const socketIo = require('socket.io')
+const { v4: uuidv4 } = require('uuid');
+const cookieParser = require('cookie-parser'); // เพิ่ม module cookie-parser
+const cookie = require('cookie'); // เพิ่ม module cookie
 
 const app = express();
 const server = http.createServer(app);
@@ -11,18 +14,25 @@ const rooms = new Map();
 const onlineUsers = new Set();
 const roomNames = [123]; // เก็บเฉพาะชื่อห้อง
 
+// เชื่อมต่อ Express กับ Socket.IO
 app.use(express.static(path.join(__dirname, 'client')));
+app.use(cookieParser()); // เพิ่ม middleware สำหรับการใช้งาน Cookies
 
 io.on('connection', (socket) => {
-    let userId;
+    // ดึงคุกกี้จาก HTTP request ของ Socket.IO
+    const cookies = socket.handshake.headers.cookie;
+    const parsedCookies = cookie.parse(cookies || '');
+    const userId = parsedCookies['userId'] || socket.id;
+    console.log(`sadw : ${userId}`);
+    // ส่ง userId กลับไปยัง client
+    socket.emit('set-user-id', userId);
     socket.on('gust', () => {
-        userId = socket.id;
+        
         onlineUsers.add(userId);
         // ส่งรายชื่อผู้ใช้ที่ออนไลน์ให้กับผู้ใช้ทั้งหมดที่เข้าเว็บไซต์
     io.emit('update-online-users', Array.from(onlineUsers));
         console.log(`new user : ${userId}`);
         console.log("gust")
-        localStorage.setItem('userId', userId); // หรือ sessionStorage.setItem('userId', userId);
         socket.emit('gustOk');
         // เมื่อเชื่อมต่อ
     socket.on('get-all-rooms', () => {
@@ -47,7 +57,7 @@ io.on('connection', (socket) => {
     socket.on('chat-message', (roomId, userId, msg) => {
         socket.to(roomId).emit('chat-message', { userId, msg });
     });
-    socket.on('disconnect', () => {
+    socket.on('leave', (userId) => {
         // ลบผู้ใช้ออกจากรายการของผู้ใช้ที่ออนไลน์
        onlineUsers.delete(userId);
        // ส่งรายชื่อผู้ใช้ที่ออนไลน์ให้กับผู้ใช้ทั้งหมดที่เข้าเว็บไซต์
@@ -55,9 +65,9 @@ io.on('connection', (socket) => {
        console.log(`disconnect user : ${userId}`);
        
        rooms.forEach((users, roomId) => {
-           if (users.has(socket.userId)) {
-               users.delete(socket.userId);
-               socket.to(roomId).emit('chat-message', { userId: 'system', msg: `User ${socket.userId} has left the room.` });
+           if (users.has(userId)) {
+               users.delete(userId);
+               socket.to(roomId).emit('chat-message', { userId: 'system', msg: `User ${userId} has left the room.` });
            }
        });
    });

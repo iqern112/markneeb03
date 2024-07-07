@@ -37,39 +37,11 @@
     <script>
         const socket = io();
         let roomId;
-        let userId;
-        // Check if userId exists in localStorage or sessionStorage
-const storedUserId = localStorage.getItem('userId'); // หรือ sessionStorage.getItem('userId');
-if (storedUserId) {
-    userId = storedUserId;
-    // Reconnect to socket.io with userId
-    socket.emit('gust');
-    // Handle events or actions after reconnecting
-}
+        let userId = document.cookie.split('; ').find(row => row.startsWith('userId=')).split('=')[1];
         // หลังจากเชื่อมต่อ Socket.io แล้ว
 socket.on('connect', () => {
-    console.log('Connected to server');
     // ขอข้อมูลห้องทั้งหมดจากเซิร์ฟเวอร์
     socket.emit('get-all-rooms');
-});
-
-socket.on('reconnect', () => {
-    console.log('Reconnected to server');
-    // Handle any actions or events after reconnection
-});
-
-socket.on('disconnect', () => {
-    console.log('Disconnected from server');
-    // Handle any actions or events after disconnection
-});
-
-socket.on('reconnect_attempt', () => {
-    console.log('Attempting to reconnect to server');
-});
-
-socket.on('reconnect_failed', () => {
-    console.log('Failed to reconnect to server');
-    // Handle any actions or events after failed reconnection
 });
 
 // รับข้อมูลห้องทั้งหมดจากเซิร์ฟเวอร์
@@ -86,6 +58,11 @@ socket.on('all-rooms', (roomNames) => {
         existingRoomsContainer.appendChild(roomButton);
     });
 });
+// รับ socket.id จากเซิร์ฟเวอร์และเก็บลงใน Cookies
+        socket.on('set-user-id', (userId) => {
+            
+            document.getElementById('my-user-id').textContent = userId; // แสดง userId ที่ได้รับ
+        });
 
         function createRoom() {
     const roomName = prompt('Enter room name:');
@@ -117,6 +94,12 @@ socket.on('update-online-users', (users) => {
     });
 
     onlineUsersContainer.appendChild(usersList);
+    });
+    // จัดการเมื่อผู้ใช้ปิดหน้าต่างเว็บ
+    window.addEventListener('beforeunload', () => {
+        document.getElementById('my-user-id').textContent = userId; // แสดง userId ที่ได้รับ
+        // ส่ง event ให้ server ทราบว่าผู้ใช้กำลังจะออก
+        socket.emit('leave', userId);
     });
 
         
