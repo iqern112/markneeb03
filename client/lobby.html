@@ -24,8 +24,7 @@
                     <p>My User Id :</p>
                     <div id="my-user-id"></div>
                 </div>
-                <div class="online-player" id="online-player">
-                </div>
+                <div class="online-player" id="online-player"></div>
             </div>
         
         </div>
@@ -34,9 +33,10 @@
     <script>
         const socket = io()
 
-        socket.emit('in-to-lobby')
+        socket.emit('req-user-id')
+        socket.emit('req-online-users')
 
-        socket.on('your-user-id',(userID)=>{
+        socket.on('res-user-id',(userID)=>{
             document.getElementById('my-user-id').innerText = userID
         })
 
@@ -46,8 +46,22 @@
 
         socket.on('acess-room',()=>{
             window.location.href = `/gameRoom.html`
-        })
+        });
 
+        socket.on('res-online-users',(users)=>{
+       
+        });
+
+        socket.on('res-online-users', (users) => {
+            const onlinePlayerDiv = document.getElementById('online-player');
+            onlinePlayerDiv.innerHTML = ''; // Clear the current list
+            users.forEach(user => {
+                const userElement = document.createElement('p');
+                userElement.innerText = user;
+                onlinePlayerDiv.appendChild(userElement);
+            });
+        });
+                
     </script>
 </body>
 </html>
