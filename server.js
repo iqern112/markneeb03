@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express')
 const path = require('path')
 const socketIo = require('socket.io')
+const session = require('express-session'); // เพิ่ม express-session เข้ามาใช้งาน
 const { v4: uuidv4 } = require('uuid');
 
 
