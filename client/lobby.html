@@ -37,8 +37,10 @@
     <script>
         const socket = io();
         let roomId;
-        const userIdCookie = document.cookie.split('; ').find(row => row.startsWith('userId='));
-        let userId = userIdCookie ? userIdCookie.split('=')[1] : null;
+         let userId = localStorage.getItem('userId') || sessionStorage.getItem('userId');
+        if (userId) {
+            socket.emit('gust'); // ส่ง userId เพื่อใช้เป็น socket.id หรือ userId ใน session
+        }
 
         // หลังจากเชื่อมต่อ Socket.io แล้ว
 socket.on('connect', () => {
