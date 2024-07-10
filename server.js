@@ -23,8 +23,15 @@ app.use(session({
 }));
 
 io.on('connection', (socket) => {
-    let userId = socket.handshake.session.userId;
-    console.log(`sadw : ${cookies}`);
+    let userId;
+if (!socket.handshake.session) {
+    socket.handshake.session = {};
+}
+
+if (socket.handshake.session.userId) {
+    userId = socket.handshake.session.userId;
+}
+    console.log(`sadw : ${userId}`);
     // ส่ง userId กลับไปยัง client
     socket.emit('set-user-id', userId);
     socket.on('gust', () => {
