@@ -16,11 +16,11 @@
     <script>
         const socket = io();
 
-        document.getElementById('gust-but').addEventListener('click',()=>{
-            socket.emit('gust');
+        document.getElementById('guest-but').addEventListener('click',()=>{
+            socket.emit('guest');
         })
 
-        socket.on('gustOk',()=>{
+        socket.on('guestOk',()=>{
             window.location.href = `/lobby.html`
         })
     </script>

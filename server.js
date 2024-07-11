@@ -19,9 +19,9 @@ const connectedUsers = {};
 
 io.on('connection', (socket) => {
 
-    socket.on('gust', () => {
-        console.log("gust");
-        socket.emit('gustOk');
+    socket.on('guest', () => {
+        console.log("guest");
+        socket.emit('guestOk');
     });
 
     socket.on('req-user-id',()=>{
@@ -30,7 +30,6 @@ io.on('connection', (socket) => {
         socket.emit('res-user-id', userId);
         console.log(`user ${userId} connected`)
     });
-
 
     socket.on('req-online-users',()=>{
         socket.emit('res-online-users', Object.keys(connectedUsers));
@@ -41,6 +40,9 @@ io.on('connection', (socket) => {
         socket.emit('acess-room');
     });
    
+    socket.on('disconnect',()=>{
+        console.log("user disconnect")
+    });
 });
 
 const port = process.env.port || 3000;
